@@ -53,3 +53,46 @@ def read_qrel_file(qrel_filepath):
 
     return result
 
+import json
+
+def get_100_queries(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    queries = {}
+
+    # dict query_text -> answers_texts
+    for query in data:
+        query_text = query_id_to_text(query['topic_id'], 'Topics_1.json')
+        answers_results = []
+        for result in query['results']:
+            answer = result[0]  # Access the dictionary within the list
+            cleaned_text = clean_answers_text(answer)
+            answers_results.append(cleaned_text)
+        queries[query_text] = answers_results
+
+    return queries
+
+def query_id_to_text(query_id, file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Assuming data is a list of dictionaries
+    for item in data:
+        if item.get('Id') == query_id:
+            text = clean_topics_text(item)
+            return text
+    
+    return "Query ID not found"
+
+
+
+def reformat_json_file(input_filepath, output_filepath):
+    # Read the JSON data from the input file
+    with open(input_filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Write the JSON data to the output file with indentation
+    with open(output_filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+

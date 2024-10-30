@@ -1,4 +1,8 @@
 topics_1.json
 topics_2.json
 answers.json
-qrel_1.tsv  
+qrel_1.tsv 
+top_100_results.json
+answer_embeddings.pt
+cos_sim.pt
+topic_embeddings.pt

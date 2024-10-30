@@ -52,3 +52,4 @@ def read_qrel_file(qrel_filepath):
                 result[query_id] = {doc_id: score}
 
     return result
+

@@ -6,3 +6,5 @@ top_100_results.json
 answer_embeddings.pt
 cos_sim.pt
 topic_embeddings.pt
+
+*.json

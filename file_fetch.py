@@ -59,19 +59,25 @@ def get_100_queries(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    queries = {}
+    cleaned_top_100 = {}
 
     # dict query_text -> answers_texts
     for query in data:
-        query_text = query_id_to_text(query['topic_id'], 'Topics_1.json')
+        query_text = query_id_to_text(query['topic_id'], 'topics_1.json')
         answers_results = []
         for result in query['results']:
             answer = result[0]  # Access the dictionary within the list
             cleaned_text = clean_answers_text(answer)
-            answers_results.append(cleaned_text)
-        queries[query_text] = answers_results
+            answers_results.append({
+                'answer_id': answer['Id'],
+                'text': cleaned_text
+            })
+        cleaned_top_100[query['topic_id']] = {
+            'query_text': query_text,
+            'answers': answers_results
+        }
 
-    return queries
+    return cleaned_top_100
 
 def query_id_to_text(query_id, file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -95,4 +101,3 @@ def reformat_json_file(input_filepath, output_filepath):
     # Write the JSON data to the output file with indentation
     with open(output_filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
-
